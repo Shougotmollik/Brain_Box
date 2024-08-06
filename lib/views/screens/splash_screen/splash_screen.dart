@@ -1,9 +1,11 @@
+import 'dart:async';
+
 import 'package:brain_box/constants/app_strings.dart';
 import 'package:brain_box/constants/image_strings.dart';
 import 'package:brain_box/views/screens/onboarding_screen/onboarding_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/route_manager.dart';
+import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -15,15 +17,19 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-    _moveToNextScreen();
     super.initState();
+    _moveToNextScreen();
   }
 
   Future<void> _moveToNextScreen() async {
-    await Future.delayed(const Duration(seconds: 2));
-    if (mounted) {
-      Get.to(const OnboardingScreen());
-    }
+    Timer(
+      const Duration(seconds: 3),
+      () {
+        if (mounted) {
+          Get.to(const OnboardingScreen());
+        }
+      },
+    );
   }
 
   @override
@@ -31,18 +37,15 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       body: Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            const SizedBox(height: 320),
-            SvgPicture.asset(AppImages.appLogo),
-            const Spacer(),
-            const Text(
+            const SizedBox(height: 120),
+            Lottie.network(AppImages.splashScreen),
+            const SizedBox(height: 180),
+            Text(
               AppStrings.appName,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 24,
-              ),
-            ),
-            const SizedBox(height: 40)
+              style: Theme.of(context).textTheme.titleLarge,
+            )
           ],
         ),
       ),

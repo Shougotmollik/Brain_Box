@@ -12,13 +12,33 @@ class OnboardingScreen extends StatelessWidget {
       body: PageView.builder(
         itemCount: _contoller.onboardingPages.length,
         itemBuilder: (context, index) {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Lottie.network(_contoller.onboardingPages[index].image),
-              Text(_contoller.onboardingPages[index].title),
-              Text(_contoller.onboardingPages[index].subTitle),
-            ],
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 42),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Lottie.network(_contoller.onboardingPages[index].image),
+                const SizedBox(height: 64),
+                Text(
+                  _contoller.onboardingPages[index].title,
+                  style: const TextStyle(
+                    fontSize: 34,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 22),
+                Text(
+                  _contoller.onboardingPages[index].subTitle,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.grey,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
           );
         },
       ),

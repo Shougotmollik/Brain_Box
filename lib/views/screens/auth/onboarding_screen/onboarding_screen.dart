@@ -132,9 +132,7 @@ class OnboardingScreenInfo extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        customImage(
-          imageSource: image,
-        ),
+        customImage(imageSource: image, height: 550),
         Text(title,
             textAlign: TextAlign.center,
             style: const TextStyle(fontSize: 34, fontWeight: FontWeight.bold)),

@@ -1,7 +1,8 @@
 import 'package:brain_box/utils/constants/app_assets_path.dart';
 import 'package:brain_box/utils/constants/app_strings.dart';
 import 'package:brain_box/utils/ui_helper/ui_helper.dart';
-import 'package:brain_box/views/auth/onboarding_screen/onboarding_screen.dart';
+import 'package:brain_box/views/screens/auth/onboarding_screen/onboarding_screen.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

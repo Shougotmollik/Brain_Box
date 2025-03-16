@@ -85,6 +85,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               bottom: 20,
               right: 20,
               child: Container(
+                height: 45,
+                width: 75,
                 decoration: BoxDecoration(
                     color: Colors.black87,
                     borderRadius: BorderRadius.circular(12)),
@@ -94,8 +96,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       _currentIndex == _pages.length - 1 ? 'Finish' : 'Next',
                       style: const TextStyle(
                         fontWeight: FontWeight.w500,
-                        fontSize: 16,
-                        color: Colors.white70,
+                        fontSize: 17,
+                        color: Colors.white,
                       ),
                     )),
               )),
@@ -132,10 +134,10 @@ class OnboardingScreenInfo extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        customImage(imageSource: image, height: 550),
+        customImage(imageSource: image, height: 480),
         Text(title,
             textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 34, fontWeight: FontWeight.bold)),
+            style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Text(

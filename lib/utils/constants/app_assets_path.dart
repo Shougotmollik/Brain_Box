@@ -6,4 +6,6 @@ class AppAssetsPath {
   static const String onBoardingImage1 = 'assets/images/Robo Image.png';
   static const String onBoardingImage2 = 'assets/images/Robot Image.png';
   static const String onBoardingImage3 = 'assets/images/Robot Img.png';
+
+  static const String backButtonIcon = 'assets/icons/Back.png';
 }

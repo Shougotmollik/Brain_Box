@@ -7,11 +7,13 @@ class CustomTextFormField extends StatefulWidget {
     required this.prefixIcon,
     this.showToggle = false,
     required this.textEditingController,
+    this.validator,
   });
   final String hintText;
   final IconData prefixIcon;
   final bool showToggle;
   final TextEditingController textEditingController;
+  final String? Function(String?)? validator;
 
   @override
   State<CustomTextFormField> createState() => _CustomTextFormFieldState();
@@ -27,6 +29,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
       child: TextFormField(
         obscureText: widget.showToggle ? _obscureText : !_obscureText,
         controller: widget.textEditingController,
+        validator: widget.validator,
         style: const TextStyle(
           fontSize: 18,
           color: Colors.black54,

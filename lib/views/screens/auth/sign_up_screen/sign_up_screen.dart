@@ -7,19 +7,20 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class LogInScreen extends StatefulWidget {
-  const LogInScreen({super.key});
+class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({super.key});
 
   @override
-  State<LogInScreen> createState() => _LogInScreenState();
+  State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
+final TextEditingController _nameTEController = TextEditingController();
 final TextEditingController _emailTEController = TextEditingController();
 final TextEditingController _passwordTEController = TextEditingController();
 final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 final FormValidator _formValidator = FormValidator();
 
-class _LogInScreenState extends State<LogInScreen> {
+class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,7 +33,7 @@ class _LogInScreenState extends State<LogInScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 34),
+                const SizedBox(height: 8),
                 const SizedBox(
                   width: 200,
                   height: 100,
@@ -44,9 +45,16 @@ class _LogInScreenState extends State<LogInScreen> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 38),
+                const SizedBox(height: 24),
                 CustomTextFormField(
                   hintText: 'Enter your full name ',
+                  prefixIcon: Icons.person_2_outlined,
+                  textEditingController: _nameTEController,
+                  validator: _formValidator.validateName,
+                ),
+                const SizedBox(height: 22),
+                CustomTextFormField(
+                  hintText: 'Enter your email address ',
                   prefixIcon: Icons.mail_outlined,
                   textEditingController: _emailTEController,
                   validator: _formValidator.validateEmail,
@@ -61,8 +69,8 @@ class _LogInScreenState extends State<LogInScreen> {
                 ),
                 const SizedBox(height: 38),
                 CustomElevatedButton(
-                    onTap: _logInButton,
-                    btnText: 'Log In',
+                    onTap: _registerButton,
+                    btnText: 'Register',
                     bgColor: Colors.black87,
                     textColor: Colors.white),
                 const SizedBox(height: 22),
@@ -72,7 +80,7 @@ class _LogInScreenState extends State<LogInScreen> {
                     TextSpan(
                       children: [
                         TextSpan(
-                            text: 'Sign up',
+                            text: 'Sign In',
                             style: const TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 18,
@@ -80,10 +88,10 @@ class _LogInScreenState extends State<LogInScreen> {
                             ),
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
-                                Get.toNamed(RouteNames.signUpScreen);
+                                Get.toNamed(RouteNames.logInScreen);
                               }),
                       ],
-                      text: 'Create New Account? ',
+                      text: 'Already Have An Account? ',
                       style: const TextStyle(
                         fontSize: 16,
                         color: Colors.grey,
@@ -139,9 +147,7 @@ class _LogInScreenState extends State<LogInScreen> {
     );
   }
 
-  void _logInButton() {
-    _formValidator.validateAndProceed(_formKey, () {
-      Get.toNamed(RouteNames.chatBotScreen);
-    });
+  void _registerButton() {
+    _formValidator.validateAndProceed(_formKey, () {});
   }
 }

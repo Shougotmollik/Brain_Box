@@ -1,8 +1,10 @@
-import 'package:brain_box/controllers/form_validator.dart';
+import 'package:brain_box/services/form_validator.dart';
 import 'package:brain_box/route/route_names.dart';
 import 'package:brain_box/views/widgets/custom_app_bar.dart';
 import 'package:brain_box/views/widgets/custom_elevated_button.dart';
 import 'package:brain_box/views/widgets/custom_text_form_field.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -14,13 +16,44 @@ class SignUpScreen extends StatefulWidget {
   State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-final TextEditingController _nameTEController = TextEditingController();
-final TextEditingController _emailTEController = TextEditingController();
-final TextEditingController _passwordTEController = TextEditingController();
-final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-final FormValidator _formValidator = FormValidator();
-
 class _SignUpScreenState extends State<SignUpScreen> {
+  final TextEditingController _nameTEController = TextEditingController();
+  final TextEditingController _emailTEController = TextEditingController();
+  final TextEditingController _passwordTEController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final FormValidator _formValidator = FormValidator();
+
+  Future<bool> createUserWithEmailAndPassword() async {
+    try {
+      // Create the user account
+      final userCredential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: _emailTEController.text.trim(),
+        password: _passwordTEController.text.trim(),
+      );
+
+      // Save the user's name to their profile
+      await userCredential.user
+          ?.updateDisplayName(_nameTEController.text.trim());
+
+      // If you want to also store in Firestore (recommended for more user data)
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userCredential.user?.uid)
+          .set({
+        'name': _nameTEController.text.trim(),
+        'email': _emailTEController.text.trim(),
+        'createdAt': FieldValue.serverTimestamp(),
+      });
+
+      print(userCredential);
+      return true; // Signup successful
+    } on FirebaseAuthException catch (e) {
+      print(e.message);
+      return false; // Signup failed
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -148,6 +181,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   void _registerButton() {
-    _formValidator.validateAndProceed(_formKey, () {});
+    _formValidator.validateAndProceed(_formKey, () async {
+      bool signupSuccess = await createUserWithEmailAndPassword();
+      if (signupSuccess) {
+        Get.snackbar("Registration Successful", " Now Login ",
+            snackPosition: SnackPosition.BOTTOM);
+        // Navigate to next screen or show success message
+        Get.toNamed(RouteNames.logInScreen);
+      } else {
+        // Show error message
+        Get.snackbar(
+            "Signup Failed", "Could not create account. Please try again.",
+            snackPosition: SnackPosition.BOTTOM);
+      }
+    });
   }
 }

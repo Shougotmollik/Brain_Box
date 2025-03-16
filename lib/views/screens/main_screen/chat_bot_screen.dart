@@ -35,14 +35,6 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
 
   AppBar _buildAppBar() {
     return AppBar(
-      leading: IconButton(
-          onPressed: () {
-            Get.back();
-          },
-          icon: const Icon(
-            Icons.arrow_back_ios,
-            size: 24,
-          )),
       title: Text(
         AppStrings.appName,
         style: TextStyle(
@@ -51,7 +43,7 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
           color: Colors.grey.shade700,
         ),
       ),
-      centerTitle: true,
+      centerTitle: false,
       actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.person))],
     );
   }

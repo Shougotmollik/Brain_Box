@@ -1,8 +1,9 @@
-import 'package:brain_box/controllers/form_validator.dart';
+import 'package:brain_box/services/form_validator.dart';
 import 'package:brain_box/route/route_names.dart';
 import 'package:brain_box/views/widgets/custom_app_bar.dart';
 import 'package:brain_box/views/widgets/custom_elevated_button.dart';
 import 'package:brain_box/views/widgets/custom_text_form_field.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -14,12 +15,26 @@ class LogInScreen extends StatefulWidget {
   State<LogInScreen> createState() => _LogInScreenState();
 }
 
-final TextEditingController _emailTEController = TextEditingController();
-final TextEditingController _passwordTEController = TextEditingController();
-final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-final FormValidator _formValidator = FormValidator();
-
 class _LogInScreenState extends State<LogInScreen> {
+  final TextEditingController _emailTEController = TextEditingController();
+  final TextEditingController _passwordTEController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final FormValidator _formValidator = FormValidator();
+  Future<bool> loginWithEmailAndPassword() async {
+    try {
+      final userCredential =
+          await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: _emailTEController.text.trim(),
+        password: _passwordTEController.text.trim(),
+      );
+      print(userCredential);
+      return true; // Login successful
+    } on FirebaseAuthException catch (e) {
+      print(e.message);
+      return false; // Login failed
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -140,8 +155,15 @@ class _LogInScreenState extends State<LogInScreen> {
   }
 
   void _logInButton() {
-    _formValidator.validateAndProceed(_formKey, () {
-      Get.toNamed(RouteNames.chatBotScreen);
+    _formValidator.validateAndProceed(_formKey, () async {
+      bool loginSuccess = await loginWithEmailAndPassword();
+      if (loginSuccess) {
+        Get.offAllNamed(RouteNames.chatBotScreen);
+      } else {
+        // Show error message
+        Get.snackbar("Login Failed", "Incorrect email or password",
+            snackPosition: SnackPosition.BOTTOM);
+      }
     });
   }
 }

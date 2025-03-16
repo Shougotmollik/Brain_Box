@@ -1,7 +1,7 @@
+import 'package:brain_box/controllers/auth_controller.dart';
 import 'package:brain_box/utils/constants/app_assets_path.dart';
 import 'package:brain_box/utils/constants/app_strings.dart';
 import 'package:brain_box/utils/ui_helper/ui_helper.dart';
-import 'package:brain_box/views/screens/auth/onboarding_screen/onboarding_screen.dart';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -13,13 +13,13 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
+final AuthController _authController = Get.put(AuthController());
+
 class _SplashScreenState extends State<SplashScreen> {
   Future<void> _moveToNextScreen() async {
     await Future.delayed(
       const Duration(seconds: 3),
-      () {
-        Get.to(const OnboardingScreen());
-      },
+      () => _authController.checkAuthState(),
     );
   }
 

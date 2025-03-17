@@ -3,6 +3,7 @@ import 'package:brain_box/route/app_routes.dart';
 import 'package:brain_box/route/route_names.dart';
 import 'package:brain_box/theme/theme.dart';
 import 'package:brain_box/utils/constants/app_strings.dart';
+import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -17,6 +18,10 @@ class BrainBoxApp extends StatelessWidget {
       initialBinding: ControllerBinder(),
       getPages: AppRoutes.pages,
       initialRoute: RouteNames.splashScreen,
+      //   Device Preview
+      useInheritedMediaQuery: true,
+      locale: DevicePreview.locale(context),
+      builder: DevicePreview.appBuilder,
     );
   }
 }

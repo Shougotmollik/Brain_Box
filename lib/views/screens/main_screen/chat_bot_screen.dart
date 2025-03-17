@@ -1,8 +1,9 @@
+import 'package:brain_box/services/gemini_service.dart';
+import 'package:brain_box/utils/constants/api_key.dart';
 import 'package:brain_box/utils/constants/app_strings.dart';
 import 'package:brain_box/views/widgets/chat_message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:get/get.dart';
 
 class ChatBotScreen extends StatefulWidget {
   const ChatBotScreen({super.key});
@@ -15,6 +16,16 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
   final TextEditingController _textController = TextEditingController();
   final List<ChatMessage> _messages = [];
   bool _isTyping = false;
+  late GeminiService _geminiService;
+  @override
+  void initState() {
+    super.initState();
+    // initialize gemini service
+    _geminiService = GeminiService(apiKey: apiKey);
+    // Add Initial greeting message
+    _messages.add(const ChatMessage(
+        text: 'Hello! How can I help you today?', isUser: false));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -138,7 +149,7 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
   }
 
   // Handle message submission
-  void _handleSubmitted(String text) {
+  Future<void> _handleSubmitted(String text) async {
     if (text.trim().isEmpty) return;
 
     _textController.clear();
@@ -152,17 +163,28 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
     });
 
     // Simulate chatbot response after a delay
-    Future.delayed(const Duration(seconds: 2), () {
+    try {
+      final response = await _geminiService.generateResponse(text);
+      Future.delayed(const Duration(seconds: 2), () {
+        if (mounted) {
+          setState(() {
+            _isTyping = false;
+            _messages.add(ChatMessage(
+              text: response,
+              isUser: false,
+            ));
+          });
+        }
+      });
+    } catch (e) {
       if (mounted) {
         setState(() {
           _isTyping = false;
           _messages.add(const ChatMessage(
-            text: 'This is a sample response from the chatbot.',
-            isUser: false,
-          ));
+              text: "Sorry, I couldn't process that request", isUser: false));
         });
       }
-    });
+    }
   }
 
   @override

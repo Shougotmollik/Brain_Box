@@ -1,9 +1,11 @@
+import 'package:brain_box/route/route_names.dart';
 import 'package:brain_box/services/gemini_service.dart';
 import 'package:brain_box/utils/constants/api_key.dart';
 import 'package:brain_box/utils/constants/app_strings.dart';
 import 'package:brain_box/views/widgets/chat_message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:get/get.dart';
 
 class ChatBotScreen extends StatefulWidget {
   const ChatBotScreen({super.key});
@@ -55,7 +57,13 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
         ),
       ),
       centerTitle: false,
-      actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.person))],
+      actions: [
+        IconButton(
+            onPressed: () {
+              Get.offAllNamed(RouteNames.welcomeScreen);
+            },
+            icon: const Icon(Icons.logout))
+      ],
     );
   }
 
